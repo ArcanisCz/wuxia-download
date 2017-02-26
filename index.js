@@ -2,15 +2,16 @@ var http = require('http');
 var cheerio = require("cheerio");
 var fs = require('fs');
 
-
-getRebirth(1,2).then(bodies => console.log(bodies));
+getRebirth(101,137).then(bodies => console.log(bodies));
 
 function getRebirth(from, to) {
     var promises = [];
     for(var i = from; i <= to; i++){
         promises.push(getBody("/rebirth-index/rebirth-chapter-"+i+"/").then(parseBody).then(makeHtml));
+        // var waitTill = new Date(new Date().getTime() + 100);
+        // while(waitTill > new Date()){}
     }
-    return Promise.all(promises).then((promises) => writeFile("pokus", promises.join("")));
+    return Promise.all(promises).then((promises) => writeFile("rebirth-"+from+"-"+to, promises.join("")));
 }
 
 function parseBody(html) {
