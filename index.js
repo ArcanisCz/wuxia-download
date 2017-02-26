@@ -1,21 +1,40 @@
 var http = require('http');
 var cheerio = require("cheerio");
+var fs = require('fs');
 
-getRebirth(1,1).then(bodies => console.log(bodies));
+
+getRebirth(1,2).then(bodies => console.log(bodies));
 
 function getRebirth(from, to) {
     var promises = [];
     for(var i = from; i <= to; i++){
-        promises.push(getBody("/rebirth-index/rebirth-chapter-"+i+"/").then(parseBody));
+        promises.push(getBody("/rebirth-index/rebirth-chapter-"+i+"/").then(parseBody).then(makeHtml));
     }
-    return Promise.all(promises);
+    return Promise.all(promises).then((promises) => writeFile("pokus", promises.join("")));
 }
 
 function parseBody(html) {
     var body = cheerio.load(html);
+    const content = body("[itemprop=articleBody]").html();
     return Promise.resolve({
         title: body(".entry-title").html(),
-        body: body("[itemprop=articleBody]").html()
+        content: content
+    });
+}
+
+function makeHtml(body) {
+    return Promise.resolve("<h1>"+body.title+"</h1>"+body.content);
+}
+
+function writeFile(name, content) {
+    return new Promise((resolve, reject) => {
+        fs.writeFile("./books/"+name+".html", content, function(err) {
+            if(err) {
+                return console.log(err);
+                reject();
+            }
+           resolve()
+        });
     });
 }
 
