@@ -3,7 +3,16 @@ var cheerio = require("cheerio");
 var fs = require('fs');
 
 // getRebirth(101,137);
-getSotr(1,89);
+// getSotr(406,459);
+getWmW(450, 500);
+
+function getWmW(from, to) {
+    var promises = [];
+    for(var i = from; i <= to; i++){
+        promises.push(getBody("/wmw-index/wmw-chapter-"+i+"/").then(parseBody).then(makeHtml));
+    }
+    return Promise.all(promises).then((promises) => writeFile("wmw-"+from+"-"+to, promises.join("")));
+}
 
 function getRebirth(from, to) {
     var promises = [];
