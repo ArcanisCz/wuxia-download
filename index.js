@@ -4,7 +4,16 @@ var fs = require('fs');
 
 // getRebirth(101,137);
 // getSotr(406,459);
-getWmW(450, 500);
+// getWmW(450, 500);
+getIssth(8, 1352, 1409);
+
+function getIssth(book, from, to) {
+    var promises = [];
+    for(var i = from; i <= to; i++){
+        promises.push(getBody("/issth-index/issth-book-"+book+"-chapter-"+i+"/").then(parseBody).then(makeHtml));
+    }
+    return Promise.all(promises).then((promises) => writeFile("issth-"+from+"-"+to, promises.join("")));
+}
 
 function getWmW(from, to) {
     var promises = [];
@@ -32,10 +41,10 @@ function getSotr(from, to) {
 
 function parseBody(html) {
     var body = cheerio.load(html);
-    const content = body("[itemprop=articleBody]").html();
+    const content = body(".entry-content");
     return Promise.resolve({
         title: body(".entry-title").html(),
-        content: content
+        content: content.html(),
     });
 }
 
