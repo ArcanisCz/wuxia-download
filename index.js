@@ -6,7 +6,7 @@ var fs = require('fs');
 // getSotr(700, 754);
 // getWmW(450, 500);
 // getIssth(10, 1558, 1599);
-getAwe(1,100);
+getAwe(301,405);
 
 function getIssth(book, from, to) {
     var promises = [];
