@@ -3,9 +3,10 @@ var cheerio = require("cheerio");
 var fs = require('fs');
 
 // getRebirth(101,137);
-// getSotr(406,459);
+// getSotr(700, 754);
 // getWmW(450, 500);
-getIssth(8, 1352, 1409);
+// getIssth(10, 1558, 1599);
+getAwe(1,100);
 
 function getIssth(book, from, to) {
     var promises = [];
@@ -37,6 +38,25 @@ function getSotr(from, to) {
         promises.push(getBody("/sotr-index/sotr-chapter-"+i+"/").then(parseBody).then(makeHtml));
     }
     return Promise.all(promises).then((promises) => writeFile("sotr-"+from+"-"+to, promises.join("")));
+}
+
+function getAwe(from, to) {
+    var tasks = [];
+    const f = i => () => getBody("/awe-index/awe-chapter-"+i+"/")
+        .then(parseBody)
+        .then(makeHtml)
+        .then(x => new Promise(resolve => setTimeout(() => resolve(x), 100)));
+    for(var i = from; i <= to; i++){
+        tasks.push(f(i));
+    }
+    return runSerial(tasks).then((promises) => writeFile("awe-"+from+"-"+to, promises.join("")));
+}
+
+function runSerial(tasks) {
+    const concat = list => Array.prototype.concat.bind(list)
+    const promiseConcat = f => x => f().then(concat(x))
+    const promiseReduce = (acc, x) => acc.then(promiseConcat(x))
+    return tasks.reduce(promiseReduce, Promise.resolve([]))
 }
 
 function parseBody(html) {
@@ -77,6 +97,7 @@ function getBody(path) {
                 body += d;
             });
             response.on('end', function () {
+                console.log("done", path);
                 resolve(body);
             });
         });
