@@ -1,0 +1,24 @@
+{
+  "name": "wuxia-download",
+  "version": "1.0.0",
+  "description": "wuxia-download",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cheerio": "^0.22.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArcanisCz/wuxia-download.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArcanisCz/wuxia-download/issues"
+  },
+  "homepage": "https://github.com/ArcanisCz/wuxia-download#readme"
+}
