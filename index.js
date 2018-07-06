@@ -2,11 +2,8 @@ const cheerio = require("cheerio");
 const fs = require('fs');
 const superagent = require("superagent");
 
-// getRebirth(101,137);
-// getSotr(700, 754);
-// getWmW(450, 500);
-// getIssth(10, 1558, 1599);
-getAwe(537, 538);
+getAwe(537, 563);
+// getAwe(564, 712);
 
 function getAwe(from, to) {
     const tasks = [];
@@ -31,14 +28,14 @@ function parseBody(html) {
     const body = cheerio.load(html);
     const title = body(".caption img + h4");
     return Promise.resolve({
-        title: title.hasClass("text-spoiler") ? "SPOILER" : title.html(),
+        title: title.hasClass("text-spoiler") ? "" : title.html(),
         spoilerTitle: title.hasClass("text-spoiler") ? title.html() : "",
         content: body(".fr-view").html(),
     });
 }
 
 function makeHtml(body) {
-    return Promise.resolve(`<h1>${body.title}</h1>${body.content}<br /><b>${body.spoilerTitle}</b>`);
+    return Promise.resolve(`<h1>${body.title}<span style="display: none">${body.spoilerTitle}</span></h1>${body.content}<br /><b>${body.spoilerTitle}</b>`);
 }
 
 function writeFile(name, content) {
