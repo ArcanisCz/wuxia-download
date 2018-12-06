@@ -2,8 +2,27 @@ const cheerio = require("cheerio");
 const fs = require('fs');
 const superagent = require("superagent");
 
-getAwe(537, 563);
+// getAwe(537, 563);
 // getAwe(564, 712);
+// getAwe(713, 742);
+// getAwe(747, 759);
+// getAwe(760, 779);
+
+// getSotr(846, 852);
+// getSotr(853, 876);
+// 2 weird urls here
+// getSotr(879, 902);
+// getSotr(903, 1011);
+// getSotr(1012, 1076);
+// getSotr(1077, 1141);
+// getSotr(1142, 1188);
+// getSotr(1189, 1203);
+// getSotr(1204, 1265);
+// getSotr(1266, 1309);
+// getSotr(1310, 1366);
+// getSotr(1341, 1362);
+getSotr(1363, 1379);
+
 
 function getAwe(from, to) {
     const tasks = [];
@@ -17,6 +36,18 @@ function getAwe(from, to) {
     return runSerial(tasks).then((promises) => writeFile("awe-" + from + "-" + to, promises.join("")));
 }
 
+function getSotr(from, to) {
+    const tasks = [];
+    const f = i => () => getBody(`/novel/sovereign-of-the-three-realms/sotr-chapter-${i}/`)
+        .then(parseBody)
+        .then(makeHtml)
+        .then(x => new Promise(resolve => setTimeout(() => resolve(x), randMilis())));
+    for (let i = from; i <= to; i++) {
+        tasks.push(f(i));
+    }
+    return runSerial(tasks).then((promises) => writeFile("sotr-" + from + "-" + to, promises.join("")));
+}
+
 function runSerial(tasks) {
     const concat = list => Array.prototype.concat.bind(list);
     const promiseConcat = f => x => f().then(concat(x));
@@ -25,12 +56,13 @@ function runSerial(tasks) {
 }
 
 function parseBody(html) {
-    const body = cheerio.load(html);
-    const title = body(".caption img + h4");
+    const $ = cheerio.load(html);
+    const title = $(".caption img + h4");
+    const a = $($("body").find('.panel-default .fr-view'));
     return Promise.resolve({
         title: title.hasClass("text-spoiler") ? "" : title.html(),
         spoilerTitle: title.hasClass("text-spoiler") ? title.html() : "",
-        content: body(".fr-view").html(),
+        content: a.html(),
     });
 }
 
@@ -55,6 +87,7 @@ function getBody(path) {
         superagent.get(`https://www.wuxiaworld.com${path}`)
             .then((res) => {
                 console.log("done", path);
+                // console.log(res.text);
                 resolve(res.text)
             })
             .catch((err) => {
@@ -62,4 +95,8 @@ function getBody(path) {
             });
     });
 
+}
+
+function randMilis() {
+    return Math.round(Math.random() * 500);
 }
