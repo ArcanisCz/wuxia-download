@@ -2,27 +2,11 @@ const cheerio = require("cheerio");
 const fs = require('fs');
 const superagent = require("superagent");
 
-// getAwe(537, 563);
-// getAwe(564, 712);
-// getAwe(713, 742);
-// getAwe(747, 759);
 // getAwe(760, 779);
+// getAwe(942, 1028);
 
-// getSotr(846, 852);
-// getSotr(853, 876);
-// 2 weird urls here
-// getSotr(879, 902);
-// getSotr(903, 1011);
-// getSotr(1012, 1076);
-// getSotr(1077, 1141);
-// getSotr(1142, 1188);
-// getSotr(1189, 1203);
-// getSotr(1204, 1265);
-// getSotr(1266, 1309);
-// getSotr(1310, 1366);
-// getSotr(1341, 1362);
-getSotr(1363, 1379);
-
+// getSotr(1363, 1379);
+getSotr(1395, 1401);
 
 function getAwe(from, to) {
     const tasks = [];
