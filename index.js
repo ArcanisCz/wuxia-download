@@ -4,9 +4,13 @@ const superagent = require("superagent");
 
 // getAwe(760, 779);
 // getAwe(942, 1028);
+// getAwe(1029, 1071);
 
 // getSotr(1363, 1379);
-getSotr(1395, 1401);
+// getSotr(1395, 1401);
+
+// getEmperor(1, 99);
+getEmperor(100, 199);
 
 function getAwe(from, to) {
     const tasks = [];
@@ -31,6 +35,19 @@ function getSotr(from, to) {
     }
     return runSerial(tasks).then((promises) => writeFile("sotr-" + from + "-" + to, promises.join("")));
 }
+
+function getEmperor(from, to) {
+    const tasks = [];
+    const f = i => () => getBody(`/novel/emperors-domination/emperor-chapter-${i}/`)
+        .then(parseBody)
+        .then(makeHtml)
+        .then(x => new Promise(resolve => setTimeout(() => resolve(x), randMilis())));
+    for (let i = from; i <= to; i++) {
+        tasks.push(f(i));
+    }
+    return runSerial(tasks).then((promises) => writeFile("emperor-" + from + "-" + to, promises.join("")));
+}
+
 
 function runSerial(tasks) {
     const concat = list => Array.prototype.concat.bind(list);
