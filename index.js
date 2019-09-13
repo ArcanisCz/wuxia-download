@@ -9,13 +9,14 @@ const superagent = require("superagent");
 // getAwe(1151, 1159);
 // getAwe(1164, 1180);
 // getAwe(1181, 1249);
-getAwe(1263, 1293);
+// getAwe(1263, 1293);
 
 // getSotr(1363, 1379);
 // getSotr(1395, 1401);
 // getSotr(1410, 1511);
 // getSotr(1511, 1523);
 // getSotr(1524, 1596);
+// getSotr(1597, 1691);
 
 // getEmperor(1, 99);
 // getEmperor(100, 199);
@@ -24,7 +25,16 @@ getAwe(1263, 1293);
 // getEmperor(500, 599);
 // getEmperor(600, 699);
 // getEmperor(700, 799);
-
+// getEmperor(800, 899);
+// getEmperor(900, 999);
+// getEmperor(1121, 1199);
+// getEmperor(1200, 1299);
+// getEmperor(1300, 1399);
+// getEmperor(1400, 1499);
+// getEmperor(1600, 1699);
+// getEmperor(1700, 1799);
+// getEmperor(1800, 1999);
+getEmperor(2000, 2199);
 
 function getAwe(from, to) {
     const tasks = [];
