@@ -34,7 +34,11 @@ const superagent = require("superagent");
 // getEmperor(1600, 1699);
 // getEmperor(1700, 1799);
 // getEmperor(1800, 1999);
-getEmperor(2000, 2199);
+// getEmperor(2000, 2199);
+
+// getRecord(364, 595);
+// getRecord(596, 795);
+getRecord(796, 1124);
 
 function getAwe(from, to) {
     const tasks = [];
@@ -70,6 +74,18 @@ function getEmperor(from, to) {
         tasks.push(f(i));
     }
     return runSerial(tasks).then((promises) => writeFile("emperor-" + from + "-" + to, promises.join("")));
+}
+
+function getRecord(from, to) {
+    const tasks = [];
+    const f = i => () => getBody(`/novel/rmji/rmji-chapter-${i}/`)
+      .then(parseBody)
+      .then(makeHtml)
+      .then(x => new Promise(resolve => setTimeout(() => resolve(x), randMilis())));
+    for (let i = from; i <= to; i++) {
+        tasks.push(f(i));
+    }
+    return runSerial(tasks).then((promises) => writeFile("record-" + from + "-" + to, promises.join("")));
 }
 
 
