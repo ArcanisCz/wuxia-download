@@ -38,7 +38,9 @@ const superagent = require("superagent");
 
 // getRecord(364, 595);
 // getRecord(596, 795);
-getRecord(796, 1124);
+// getRecord(796, 1124);
+// getRecord(1125, 1265);
+getRecord(1266, 1357);
 
 function getAwe(from, to) {
     const tasks = [];
